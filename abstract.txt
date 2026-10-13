@@ -1,5 +1,0 @@
-Customer places an order
-  → OrderCreated event
-  → Payment worker processes payment
-  → PaymentCompleted or PaymentFailed event
-  → Notification worker sends confirmation

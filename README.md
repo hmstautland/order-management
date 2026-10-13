@@ -1,6 +1,38 @@
 # Order Management API
 
-A small .NET 8 Minimal API demonstrating dependency injection, configuration, structured logging, cancellation tokens, and asynchronous code.
+A .NET 8 Minimal API demonstrating dependency injection, configuration, structured logging, cancellation tokens, and asynchronous code.
+
+## Abstract
+
+Taking an order should be fast and reliable, and should not depend on payment or notification work finishing first. This service handles the intake step: a customer places an order, it is validated and stored with the status `PendingPayment`, and the caller gets an immediate response. Work stops if the client disconnects, so abandoned requests do not keep consuming resources.
+
+Today the API supports creating and retrieving orders, backed by an in-memory store. The intended flow extends this into an event-driven process:
+
+1. Customer places an order.
+2. An `OrderCreated` event is published.
+3. A payment worker processes the payment.
+4. A `PaymentCompleted` or `PaymentFailed` event is published.
+5. A notification worker sends the customer a confirmation.
+
+Only step 1 is implemented so far.
+
+## Context
+
+- **Users:** UIs for customers, for example an e-commerce front end calling the API.
+- **Stage:** demo/MVP. After the first week it will be refined and taken to production, so code is written production-minded.
+- **Team and timeline:** solo-ish, about 1 week. Others will be involved before production.
+- **Stack:** C# / .NET 8, ASP.NET Core Minimal API.
+
+### Expected practices
+
+Not hard rules, but expected in the code:
+
+- Pass a `CancellationToken` through request-scoped async calls.
+- Dependencies via constructor injection, registered at the composition root.
+- Bind settings to typed options and inject them via `IOptions<T>` rather than reading configuration directly.
+- Log with structured templates through `ILogger<T>`, not string interpolation.
+- Use `async`/`await` end to end through every layer, even where the current implementation does no real I/O, so later changes don't alter signatures. No blocking on tasks (`.Result`, `.Wait()`).
+- Validate input at the API boundary.
 
 ## Run
 
