@@ -20,11 +20,16 @@ public sealed class OrderService(
             Guid.NewGuid(),
             request.CustomerId.Trim(),
             request.Total,
-            "PendingPayment",
+            OrderStatus.PendingPayment,
             DateTimeOffset.UtcNow);
 
         await repository.SaveAsync(order, cancellationToken);
-        logger.LogDebug("Order {OrderId} stored with status {Status}", order.Id, order.Status);
+        logger.LogInformation(
+            "Created order {OrderId} for customer {CustomerId} with total {Total} and status {Status}",
+            order.Id,
+            order.CustomerId,
+            order.Total,
+            order.Status);
         return order;
     }
 

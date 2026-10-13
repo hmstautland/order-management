@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using OrderManagement.Api.Configuration;
 using OrderManagement.Api.Models;
@@ -6,6 +7,8 @@ using OrderManagement.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.Configure<OrderOptions>(builder.Configuration.GetSection(OrderOptions.SectionName));
 builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -15,7 +18,6 @@ var app = builder.Build();
 app.MapPost("/orders", async (
     CreateOrderRequest request,
     IOrderService orders,
-    ILogger<Program> logger,
     CancellationToken cancellationToken) =>
 {
     if (string.IsNullOrWhiteSpace(request.CustomerId) || request.Total <= 0)
@@ -27,12 +29,6 @@ app.MapPost("/orders", async (
     }
 
     var order = await orders.CreateAsync(request, cancellationToken);
-    logger.LogInformation(
-        "Created order {OrderId} for customer {CustomerId} with total {Total}",
-        order.Id,
-        order.CustomerId,
-        order.Total);
-
     return Results.Created($"/orders/{order.Id}", order);
 });
 

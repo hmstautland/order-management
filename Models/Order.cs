@@ -4,5 +4,5 @@ public sealed record Order(
     Guid Id,
     string CustomerId,
     decimal Total,
-    string Status,
+    OrderStatus Status,
     DateTimeOffset CreatedAt);

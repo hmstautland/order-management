@@ -1,3 +1,5 @@
 /.vscode
 /bin
 /obj
+/OrderManagement.Api.Tests/bin
+/OrderManagement.Api.Tests/obj

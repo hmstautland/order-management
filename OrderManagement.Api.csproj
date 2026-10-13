@@ -4,4 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);OrderManagement.Api.Tests/**</DefaultItemExcludes>
+  </PropertyGroup>
 </Project>

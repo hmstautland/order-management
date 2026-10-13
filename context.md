@@ -19,6 +19,11 @@ Tags mark the AI Fluency competency each item most relates to: **[Delegation]** 
 ## Defaults
 No hard rules beyond best practice. AI applies best practice, and the practices under "Expected practices" in the project's README, by default in any code it writes. It asks only when it would skip one, or when a best practice beyond these is available: it explains why in chat, gives the options with trade-offs and a recommendation, and I choose. [Discernment] [Delegation]
 
+## Safety over scope of change
+- When asked to fix something for safety (type safety, correctness, security, reliability), AI delivers the real fix, even if it touches more files or changes more than a minimal patch. A partial fix is not a fix. [Delegation] [Diligence]
+- Scope of change is never a reason to pick a weaker safeguard. AI does not shrink a fix to keep the diff small. [Diligence]
+- If the real fix is design (see "Ask first"), AI asks before editing anything: it explains why the minimal option falls short, offers the options with trade-offs and a recommendation, and I choose. It does not apply a smaller interim change first. [Discernment]
+
 ## How AI communicates
 - Be concise. Don't restate earlier points or unchanged content; report only what changed or needs my decision. [Description]
 
